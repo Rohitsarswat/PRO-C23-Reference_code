@@ -6,6 +6,7 @@ const Constraint = Matter.Constraint;
 var engine, world, backgroundImg;
 var canvas, angle, tower, ground, cannon;
 var cannonBall;
+var balls = [];
 
 function preload() {
   backgroundImg = loadImage("./assets/background.gif");
@@ -26,8 +27,11 @@ function setup() {
   tower = Bodies.rectangle(160, 350, 160, 310, { isStatic: true });
   World.add(world, tower);
   cannon = new Cannon(180, 110, 130, 100, angle);
-  cannonBall = new CannonBall(cannon.x, cannon.y);
+  
+  
 }
+
+
 
 function draw() {
   background(189);
@@ -46,13 +50,32 @@ function draw() {
   image(towerImage, tower.position.x, tower.position.y, 160, 310);
   pop();
 
+  
+  for(var i = 0; i < balls.length; i++ ){
+    showCannonBalls(balls[i], i)
+  }
   cannon.display();
-  cannonBall.display();
 }
 
 
 function keyReleased() {
   if (keyCode === DOWN_ARROW) {
-    cannonBall.shoot();
+    balls[balls.length-1].shoot();
+    balls[balls.length-1].trajectory = []
+  }
+}
+
+function keyPressed(){
+  if(keyCode === DOWN_ARROW){
+    var cannonBall = new CannonBall(cannon.x, cannon.y);
+    balls.push(cannonBall)
+    
+   }
+
+}
+
+function showCannonBalls(ball,i){
+  if(ball){
+    ball.display()
   }
 }
